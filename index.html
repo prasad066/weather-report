@@ -1,204 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
+    <title>Weather Report</title>
+
+    <!-- Poppins Font -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/javascript/javascript ES6/index1.css">
 </head>
-<link rel="stylesheet" href="index1.css">
+
 <body>
-<div  id="screen">
-    <div id="box">
-        <h3 id="title">Weather report</h3>
-        <div id="url">
-            <div id="ur1">
-                <input type="text" placeholder="Enter the Url" id="ur1l">
-            </div>
-            <div id="ur2">
-                <button id="but" onclick="abc()">Get Details</button>
-                <button id="resetBtn" type="button" onclick="resetWeather()">Reset</button>
+
+    <div id="screen">
+
+        <div id="box">
+
+            <h3 id="title">🌤️ Weather Report</h3>
+
+            <div id="url">
+
+                <div id="ur1">
+                    <input
+                        type="text"
+                        placeholder="Enter the Google Maps URL"
+                        id="ur1l"
+                    >
+                </div>
+
+                <div id="ur2">
+                    <button id="but" onclick="abc()">Get Details</button>
+                    <button id="resetBtn" type="button" onclick="resetWeather()">Reset</button>
+                </div>
 
             </div>
-        </div>
-        <div class="Details">
-            <div>
+
+
+            <div class="Details">
                 <h3>🌡️ Temperature</h3>
+                <h3><span id="temp"></span>°C</h3>
             </div>
-            <div>
-                <h3><span id="temp"></span>°C</h3>   
-            </div>
-        </div>
-        <div class="Details">
-            <div>
+
+            <div class="Details">
                 <h3>💧 Humidity</h3>
+                <h3><span id="humi"></span>%</h3>
             </div>
-            <div >
-                <h3><span id="humi"></span>%</h3>   
-            </div>
-        </div>
-        <div class="Details">
-            <div>
+
+            <div class="Details">
                 <h3>🥵 Feels like</h3>
+                <h3><span id="appa"></span>°C</h3>
             </div>
-            <div >
-                <h3><span id="appa"></span>°C</h3>   
+
+            <div class="Details">
+                <h3>☀️ Day / 🌙 Night</h3>
+                <h3><span id="isda">?</span></h3>
             </div>
-        </div>
-        <div class="Details">
-            <div>
-                <h3>☀️ Day/🌙 Night</h3>
-            </div>
-            <div >
-                <h3><span id="isda">?</span></h3>   
-            </div>
-        </div>
-        <div class="Details">
-            <div>
+
+            <div class="Details">
                 <h3>🌧️ Precipitation</h3>
+                <h3><span id="prec"></span>mm</h3>
             </div>
-            <div >
-                <h3><span id="prec"></span>mm</h3>   
-            </div>
-        </div>
-        <div class="Details">
-            <div>
+
+            <div class="Details">
                 <h3>☔ Rain</h3>
+                <h3><span id="rain"></span>mm</h3>
             </div>
-            <div >
-                <h3><span id="rain"></span>mm</h3>   
-            </div>
-        </div>
-        <div class="Details">
-            <div>
+
+            <div class="Details">
                 <h3>🌤️ Weather Condition</h3>
+                <h3><span id="weat">?</span></h3>
             </div>
-            <div>
-                <h3><span id="weat">?</span></h3>   
-            </div>
-        </div>
-        <div class="Details">
-            <div>
+
+            <div class="Details">
                 <h3>☁️ Cloud</h3>
+                <h3><span id="clou"></span>%</h3>
             </div>
-            <div>
-                <h3><span id="clou"></span>%</h3>   
-            </div>
-        </div>
-        <div class="Details">
-            <div>
+
+            <div class="Details">
                 <h3>🔵 Pressure</h3>
+                <h3><span id="pres"></span>hPa</h3>
             </div>
-            <div>
-                <h3><span id="pres"></span>hPa</h3>   
-            </div>
-        </div>
-        <div class="Details">
-            <div>
+
+            <div class="Details">
                 <h3>💨 Wind Speed</h3>
+                <h3><span id="winds"></span>km/h</h3>
             </div>
-            <div>
-                <h3><span id="winds"></span>km/h</h3>   
-            </div>
-        </div>
-        <div class="Details" style="border-bottom: 0px;">
-            <div>
+
+            <div class="Details" style="border-bottom: 0;">
                 <h3>🧭 Wind Direction</h3>
+                <h3><span id="windd">?</span></h3>
             </div>
-            <div>
-                <h3><span id="windd">?</span></h3>   
-            </div>
+
         </div>
+
     </div>
-</div>
-</body>
+
+
 <script>
-    function abc(){
-    var url=document.getElementById('ur1l').value;
+
+function abc() {
+
+    var url = document.getElementById('ur1l').value;
+
     var latitude = url.split("!3d")[1].split("!")[0];
     var longitude = url.split("!4d")[1].split("!")[0];
-    var xhr=new XMLHttpRequest();
-    var link=`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,weather_code,cloud_cover,pressure_msl,wind_speed_10m,wind_direction_10m`
-    xhr.open('GET',link)
-    xhr.onload=function(){
-        var obj=JSON.parse(xhr.responseText)
-        var temp=document.getElementById('temp')
-        var humi=document.getElementById('humi')
-        var appa=document.getElementById('appa')
-        var isda=document.getElementById('isda')
-        var prec=document.getElementById('prec')
-        var rain=document.getElementById('rain')
-        var weat=document.getElementById('weat')
-        var clou=document.getElementById('clou')
-        var pres=document.getElementById('pres')
-        var winds=document.getElementById('winds')
-        var windd=document.getElementById('windd')
 
-        temp.innerText=obj.current["temperature_2m"]
-        humi.innerText=obj.current["relative_humidity_2m"]
-        appa.innerText=obj.current["apparent_temperature"]
-        isda.innerText = obj.current["is_day"] == 1 ? "☀️" : "🌙"
-        prec.innerText=obj.current["precipitation"]
-        rain.innerText=obj.current["rain"]
-        
+    var xhr = new XMLHttpRequest();
 
-        var code = obj.current["weather_code"]
-        if (code == 0) {weat.innerText = "Clear sky"}
-        else if (code == 1) {weat.innerText = "Mainly clear"}
-        else if (code == 2) {weat.innerText = "Partly cloudy"}
-        else if (code == 3) {weat.innerText = "Overcast"}
-        else if (code == 45 || code == 48) {weat.innerText = "Fog"}
-        else if (code >= 51 && code <= 57) {weat.innerText = "Drizzle"}
-        else if (code >= 61 && code <= 67) {weat.innerText = "Rain"}
-        else if (code >= 71 && code <= 77) {weat.innerText = "Snow"}
-        else if (code >= 80 && code <= 82) {weat.innerText = "Rain showers"}
-        else if (code == 85 || code == 86) {weat.innerText = "Snow showers"}
-        else if (code == 95) {weat.innerText = "Thunderstorm"}
-        else if (code == 96 || code == 99) {weat.innerText = "Thunderstorm with hail"}
-        else {weat.innerText = "Unknown"}
+    var link = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,weather_code,cloud_cover,pressure_msl,wind_speed_10m,wind_direction_10m`;
 
+    xhr.open('GET', link);
 
-        
-        clou.innerText=obj.current["cloud_cover"]
-        pres.innerText=obj.current["pressure_msl"]
-        winds.innerText=obj.current["wind_speed_10m"]
-        windd.innerText=obj.current["wind_direction_10m"]
+    xhr.onload = function () {
 
-        var direction = obj.current["wind_direction_10m"]
+        var obj = JSON.parse(xhr.responseText);
 
-if (direction >= 337.5 || direction < 22.5) {
-    windd.innerText = "North"
-}
-else if (direction >= 22.5 && direction < 67.5) {
-    windd.innerText = "NE"
-}
-else if (direction >= 67.5 && direction < 112.5) {
-    windd.innerText = "East"
-}
-else if (direction >= 112.5 && direction < 157.5) {
-    windd.innerText = "SE"
-}
-else if (direction >= 157.5 && direction < 202.5) {
-    windd.innerText = "South"
-}
-else if (direction >= 202.5 && direction < 247.5) {
-    windd.innerText = "SW"
-}
-else if (direction >= 247.5 && direction < 292.5) {
-    windd.innerText = "West"
-}
-else {
-    windd.innerText = "NW"
-}
-        
+        var temp = document.getElementById('temp');
+        var humi = document.getElementById('humi');
+        var appa = document.getElementById('appa');
+        var isda = document.getElementById('isda');
+        var prec = document.getElementById('prec');
+        var rain = document.getElementById('rain');
+        var weat = document.getElementById('weat');
+        var clou = document.getElementById('clou');
+        var pres = document.getElementById('pres');
+        var winds = document.getElementById('winds');
+        var windd = document.getElementById('windd');
+
+        temp.innerText = obj.current["temperature_2m"];
+        humi.innerText = obj.current["relative_humidity_2m"];
+        appa.innerText = obj.current["apparent_temperature"];
+
+        isda.innerText = obj.current["is_day"] == 1 ? "☀️" : "🌙";
+
+        prec.innerText = obj.current["precipitation"];
+        rain.innerText = obj.current["rain"];
+
+        var code = obj.current["weather_code"];
+
+        if (code == 0) {
+            weat.innerText = "Clear sky";
+        }
+        else if (code == 1) {
+            weat.innerText = "Mainly clear";
+        }
+        else if (code == 2) {
+            weat.innerText = "Partly cloudy";
+        }
+        else if (code == 3) {
+            weat.innerText = "Overcast";
+        }
+        else if (code == 45 || code == 48) {
+            weat.innerText = "Fog";
+        }
+        else if (code >= 51 && code <= 57) {
+            weat.innerText = "Drizzle";
+        }
+        else if (code >= 61 && code <= 67) {
+            weat.innerText = "Rain";
+        }
+        else if (code >= 71 && code <= 77) {
+            weat.innerText = "Snow";
+        }
+        else if (code >= 80 && code <= 82) {
+            weat.innerText = "Rain showers";
+        }
+        else if (code == 85 || code == 86) {
+            weat.innerText = "Snow showers";
+        }
+        else if (code == 95) {
+            weat.innerText = "Thunderstorm";
+        }
+        else if (code == 96 || code == 99) {
+            weat.innerText = "Thunderstorm with hail";
+        }
+        else {
+            weat.innerText = "Unknown";
+        }
+
+        clou.innerText = obj.current["cloud_cover"];
+        pres.innerText = obj.current["pressure_msl"];
+        winds.innerText = obj.current["wind_speed_10m"];
+
+        var direction = obj.current["wind_direction_10m"];
+
+        if (direction >= 337.5 || direction < 22.5) {
+            windd.innerText = "North";
+        }
+        else if (direction < 67.5) {
+            windd.innerText = "NE";
+        }
+        else if (direction < 112.5) {
+            windd.innerText = "East";
+        }
+        else if (direction < 157.5) {
+            windd.innerText = "SE";
+        }
+        else if (direction < 202.5) {
+            windd.innerText = "South";
+        }
+        else if (direction < 247.5) {
+            windd.innerText = "SW";
+        }
+        else if (direction < 292.5) {
+            windd.innerText = "West";
+        }
+        else {
+            windd.innerText = "NW";
+        }
+
     }
-    xhr.send()
+
+    xhr.send();
 }
+
+
 function resetWeather() {
 
-    // Clear URL input
     document.getElementById('ur1l').value = "";
 
-    // Clear weather details
     document.getElementById('temp').innerText = "";
     document.getElementById('humi').innerText = "";
     document.getElementById('appa').innerText = "";
@@ -210,6 +237,10 @@ function resetWeather() {
     document.getElementById('pres').innerText = "";
     document.getElementById('winds').innerText = "";
     document.getElementById('windd').innerText = "?";
+
 }
+
 </script>
+
+</body>
 </html>
